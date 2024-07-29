@@ -88,3 +88,11 @@ eureka:
 ![](https://i.postimg.cc/g05Xyx3W/2024-07-26-133603.png)
 
 [URL of the commit for the client project](https://github.com/jae9380/user-service/commit/e8ce0d8fb1ef0df3f89339ce1dab67ff9453e14d)
+
+# section 2
+
+## part 1
+
+### API Gateway Service
+
+`API Gateway Service`는 사용자가 설정한 라우팅 설정에 따라 각각의 엔드 포인트로 클라이언트를 대신 요청하고 응답을 받으면 다시 클라이언트 한테 전달해주는 프록시 역활을 한다.
