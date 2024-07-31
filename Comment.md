@@ -217,6 +217,34 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
 </div>
 </details>
 
+<details>
+  <summary>part 2 / Netflix Zuul Test</summary>
+  <div markdown="1"></div>
+
+간단한 내용을 담고있는 두 가지의 서비스를 만들어 Zull이라는 Gateway에서 두 가지의 사용자의 요청이 왔을 때, 각 서비스로 잘 분산되는지 확인을 할 것이다.
+
+[Zuul](https://github.com/jae9380/MSA-SpringCloud/tree/main/zuul-service) 
+[서비스 1](https://github.com/jae9380/MSA-SpringCloud/tree/main/first-service)
+[서비스 2](https://github.com/jae9380/MSA-SpringCloud/tree/main/second-service)
+
+일단 각 서비스는 각 포트에 맞는 url로 접속을 하면 간단한 문구가 출력이 되는 서비스로 구성
+![](https://i.postimg.cc/MGngpjPj/2024-07-31-15-49-11.png)
+
+
+다음으로 Zuul 프로젝트 생성 
+
+해당 프로젝트 메인 파일에 `@EnableZuulProxy`어노테이션 설정     
+(해당 어노테이션을 설정을 하면 Zuul 프록시 서버로서의 동작을 가능하게 한다.)
+
+![](https://i.postimg.cc/8zPqxYL4/2024-07-31-15-56-07.png)
+위 처럼 yml파일에 연결할 서비스의 이름과 해당 서비스의 path, url을 설정을 하고 줄 서비스로 각 서비스로 접근을 해보자   
+
+![](https://i.postimg.cc/FKkn4Xzy/2024-07-31-15-59-18.png)   
+그러면 이 처럼 문구가 잘 나타난다.
+
+이렇게 간단한 예제를 사용하여 API Gateway 라우팅 기능을 확인했다.
+</details>
+
 _토글_
 
 ```html
