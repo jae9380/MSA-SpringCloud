@@ -245,6 +245,36 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
 이렇게 간단한 예제를 사용하여 API Gateway 라우팅 기능을 확인했다.
 </details>
 
+<details>
+  <summary>part 3 / Logging filter</summary>
+  <div markdown="1"></div>
+
+  Zull fliter를 사용하기 위해서 추상클래스 ZullFiler를 상속 받고 추상 메소드를 정의하여 요청될 때 로그를 남기게 할 것이다.
+  ![](https://i.postimg.cc/tC2X1W5r/2024-07-31-16-20-22.png)
+
+  그러면 각 메소드는 어떤 기능을 하고 어떻게 설정하는지에 대하여 알아보겠다.
+
+  * boolean shouldFilter()   
+  해당 메소드는 필터의 실행 여부를 결정하는 메소드이다.   
+  
+  * Object run()   
+  필터의 주요한 로직을 구성하는 메소드이다.    
+  주로 요청을 변경하거나, 로그를 남기거나, 응답을 조작할 때 사용을 한다.
+
+  * String filterType()   
+  필터의 타입을 지정한다. 필터가 어떤 타입을 갖는냐에 따라 언제 실행될지 결정한다.   
+
+    필터 타입의 예제
+    * pre : 라우팅 전에 실행
+    * routing : 실제 라우팅을 수행할 때 실행
+    * post : 라우팅 후에 실행
+    * error : 오류가 발생했을 때 실행
+
+  * int filterOrder()   
+    여러개의 필터가 존재할 경우, 필터의 실행 순서를 지정한다.
+
+</details>
+
 _토글_
 
 ```html
