@@ -287,6 +287,18 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
 </details>
 
 
+<details>
+  <summary>part 5 / Spring Cloud Gateway Filter</summary>
+  <div markdown="1"></div>
+  Gateway에서의 Filter는 어떻게 동작이 되는지 확인하겠다.   
+
+  ![](https://i.postimg.cc/DwkFWh4z/Filter.png)
+
+  클라이언트가 Gateway에게 요청을 전달하면, Gateway에서 어떤 서비스로 이동을 할 것인가 판단을 하고 이동을 한다.
+
+   
+</details>
+
 _토글_
 
 ```html
