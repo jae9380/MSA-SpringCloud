@@ -275,6 +275,18 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
 
 </details>
 
+<details>
+  <summary>part 4 / Spring Cloud API-Gateway test</summary>
+  <div markdown="1"></div>
+
+  기존에는 Tomcat이라는 서버가 작동되었을 것이다. 하지만 이번에는 Netty서버가 동작을 한다.   
+  Zuul에서는 동기 방식인 Tomcat 서버를 사용을 했지만, Spring Cloud API-Gateway를 사용하면 비동기 방식인 Netty가 작동을 한다.
+
+  ![](https://i.postimg.cc/jdDQDQ6c/2024-07-31-16-50-50.png)
+
+</details>
+
+
 _토글_
 
 ```html
