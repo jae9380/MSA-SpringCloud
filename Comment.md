@@ -299,6 +299,29 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
    
 </details>
 
+<details>
+  <summary>part 6 / Gateway Filter Routing configuration in JAVA code</summary>
+  <div markdown="1"></div>
+
+ apigateway-service파일 내 yml파일에서 cloud 관련 설정을 주석 처리 후 자바 파일 내부에서 이를 설정을 할 것이다.
+
+![](https://i.postimg.cc/0NvDVyZ3/2024-08-01-20-32-47.png)
+
+위코드에서 `r.path` 부분의 값의 요청이 들어오면 `uri`부분으로 이동을 한다.   
+그리고 필터 부분에서  요청과, 응답으로 두 가지로 등록을 할 수 있다.   
+헤더 부분에 어떠한 값을 저장할려고 하면 `K-V`형태로 저장을 하면 된다.  
+
+( 위 코드에서 `.addRequestHeader`가 중복되어 있는데 아래의 코드를 `.addResponseHeader`로 수정)
+
+![](https://i.postimg.cc/VLSq6Td7/2024-08-01-20-32-06.png)
+
+이제 출력이 잘 되는지 확인을 하면 
+![](https://i.postimg.cc/8zZfmmJF/2024-08-01-20-39-37.png)
+![](https://i.postimg.cc/7LcCpPNw/2024-08-01-20-43-53.png)
+Request Header와 Response Header가 잘 나타난다.
+
+</details>
+
 _토글_
 
 ```html

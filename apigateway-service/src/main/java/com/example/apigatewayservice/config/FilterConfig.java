@@ -12,11 +12,11 @@ public class FilterConfig {
         return builder.routes()
                 .route(r -> r.path("/first-service/**")
                         .filters(f->f.addRequestHeader("first-request","first-request-header")
-                                .addRequestHeader("first-response","first-response-header"))
+                                .addResponseHeader("first-response","first-response-header"))
                         .uri("http://localhost:8081"))
                 .route(r -> r.path("/second-service/**")
                         .filters(f->f.addRequestHeader("second-request","second-request-header")
-                                .addRequestHeader("second-response","second-response-header"))
+                                .addResponseHeader("second-response","second-response-header"))
                         .uri("http://localhost:8082"))
                 .build();
     }
