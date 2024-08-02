@@ -322,6 +322,25 @@ Request Header와 Response Header가 잘 나타난다.
 
 </details>
 
+<details>
+  <summary>part 7 / configuration in Yml file</summary>
+  <div markdown="1"></div>
+
+저번 단계에서 자바 코드로 작성한 내용을 다시 yml파일에서 설정을 하기 위해서 기존에 작성한 JAVA코드는 주석처리 후, yml파일에서 주석을 해제를 한다.   
+그리고 추가적인 Fliter를 설정하기 위해서 
+전 단게에서 작성한 Fliter 클래스에 내용 주석 처리 그리고 yml 내용 주석 해제 후 
+```yaml
+filters:
+  - AddRequestHeader = first-request, first-request-header2
+  - AddResponseHeader = first-response, first-response-header2
+```
+추가 작성을 하고 Postman으로 테스트를 하면    
+![](https://i.postimg.cc/6qS0RWf3/2024-08-02-16-31-03.png)
+header값이 잘 나타나는 것을 확인 가능하다.
+
+
+</details>
+
 _토글_
 
 ```html
