@@ -337,8 +337,31 @@ filters:
 추가 작성을 하고 Postman으로 테스트를 하면    
 ![](https://i.postimg.cc/6qS0RWf3/2024-08-02-16-31-03.png)
 header값이 잘 나타나는 것을 확인 가능하다.
+</details>
+
+<details>
+  <summary>part 8 / Custom Filter </summary>
+  <div markdown="1"></div>
+
+![](https://i.postimg.cc/Z5xhPnC0/2024-08-02-17-05-56.png)   
+
+`AbstractGatewayFilterFactory`를 상속을 받은 후 메소드를 재정의 하여 
+간단하게 로그를 출력하는 필터를 설정하였다.
+
+이후 yml파일로 가서 기존의 작성한 필터 내용을 제거를 하고
+```ymal
+-filters
+  -CustomFilter
+```
+이 처럼 커스텀 필터를 적용하고 실행을 해보면
 
 
+```
+... : Custom PRE filter : Request ID -> 0832b3a0-3
+... : Custom POST filter : Response code -> 200 OK
+
+```
+이 처럼 콘솔 부분에 의도한 방향대로 문구가 잘 출력 되는 것을 확인 가능하다.
 </details>
 
 _토글_
