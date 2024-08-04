@@ -223,55 +223,56 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
 
 간단한 내용을 담고있는 두 가지의 서비스를 만들어 Zull이라는 Gateway에서 두 가지의 사용자의 요청이 왔을 때, 각 서비스로 잘 분산되는지 확인을 할 것이다.
 
-[Zuul](https://github.com/jae9380/MSA-SpringCloud/tree/main/zuul-service) 
+[Zuul](https://github.com/jae9380/MSA-SpringCloud/tree/main/zuul-service)
 [서비스 1](https://github.com/jae9380/MSA-SpringCloud/tree/main/first-service)
 [서비스 2](https://github.com/jae9380/MSA-SpringCloud/tree/main/second-service)
 
 일단 각 서비스는 각 포트에 맞는 url로 접속을 하면 간단한 문구가 출력이 되는 서비스로 구성
 ![](https://i.postimg.cc/MGngpjPj/2024-07-31-15-49-11.png)
 
+다음으로 Zuul 프로젝트 생성
 
-다음으로 Zuul 프로젝트 생성 
-
-해당 프로젝트 메인 파일에 `@EnableZuulProxy`어노테이션 설정     
+해당 프로젝트 메인 파일에 `@EnableZuulProxy`어노테이션 설정  
 (해당 어노테이션을 설정을 하면 Zuul 프록시 서버로서의 동작을 가능하게 한다.)
 
 ![](https://i.postimg.cc/8zPqxYL4/2024-07-31-15-56-07.png)
-위 처럼 yml파일에 연결할 서비스의 이름과 해당 서비스의 path, url을 설정을 하고 줄 서비스로 각 서비스로 접근을 해보자   
+위 처럼 yml파일에 연결할 서비스의 이름과 해당 서비스의 path, url을 설정을 하고 줄 서비스로 각 서비스로 접근을 해보자
 
-![](https://i.postimg.cc/FKkn4Xzy/2024-07-31-15-59-18.png)   
+![](https://i.postimg.cc/FKkn4Xzy/2024-07-31-15-59-18.png)  
 그러면 이 처럼 문구가 잘 나타난다.
 
 이렇게 간단한 예제를 사용하여 API Gateway 라우팅 기능을 확인했다.
+
 </details>
 
 <details>
   <summary>part 3 / Logging filter</summary>
   <div markdown="1"></div>
 
-  Zull fliter를 사용하기 위해서 추상클래스 ZullFiler를 상속 받고 추상 메소드를 정의하여 요청될 때 로그를 남기게 할 것이다.
-  ![](https://i.postimg.cc/tC2X1W5r/2024-07-31-16-20-22.png)
+Zull fliter를 사용하기 위해서 추상클래스 ZullFiler를 상속 받고 추상 메소드를 정의하여 요청될 때 로그를 남기게 할 것이다.
+![](https://i.postimg.cc/tC2X1W5r/2024-07-31-16-20-22.png)
 
-  그러면 각 메소드는 어떤 기능을 하고 어떻게 설정하는지에 대하여 알아보겠다.
+그러면 각 메소드는 어떤 기능을 하고 어떻게 설정하는지에 대하여 알아보겠다.
 
-  * boolean shouldFilter()   
-  해당 메소드는 필터의 실행 여부를 결정하는 메소드이다.   
-  
-  * Object run()   
-  필터의 주요한 로직을 구성하는 메소드이다.    
+- boolean shouldFilter()  
+  해당 메소드는 필터의 실행 여부를 결정하는 메소드이다.
+
+- Object run()  
+  필터의 주요한 로직을 구성하는 메소드이다.  
   주로 요청을 변경하거나, 로그를 남기거나, 응답을 조작할 때 사용을 한다.
 
-  * String filterType()   
-  필터의 타입을 지정한다. 필터가 어떤 타입을 갖는냐에 따라 언제 실행될지 결정한다.   
+- String filterType()  
+  필터의 타입을 지정한다. 필터가 어떤 타입을 갖는냐에 따라 언제 실행될지 결정한다.
 
-    필터 타입의 예제
-    * pre : 라우팅 전에 실행
-    * routing : 실제 라우팅을 수행할 때 실행
-    * post : 라우팅 후에 실행
-    * error : 오류가 발생했을 때 실행
+  필터 타입의 예제
 
-  * int filterOrder()   
-    여러개의 필터가 존재할 경우, 필터의 실행 순서를 지정한다.
+  - pre : 라우팅 전에 실행
+  - routing : 실제 라우팅을 수행할 때 실행
+  - post : 라우팅 후에 실행
+  - error : 오류가 발생했을 때 실행
+
+- int filterOrder()  
+  여러개의 필터가 존재할 경우, 필터의 실행 순서를 지정한다.
 
 </details>
 
@@ -279,43 +280,41 @@ Client Side Load Balancer 장점으로는 IP하고, 포트 번호를 명시하�
   <summary>part 4 / Spring Cloud API-Gateway test</summary>
   <div markdown="1"></div>
 
-  기존에는 Tomcat이라는 서버가 작동되었을 것이다. 하지만 이번에는 Netty서버가 동작을 한다.   
-  Zuul에서는 동기 방식인 Tomcat 서버를 사용을 했지만, Spring Cloud API-Gateway를 사용하면 비동기 방식인 Netty가 작동을 한다.
+기존에는 Tomcat이라는 서버가 작동되었을 것이다. 하지만 이번에는 Netty서버가 동작을 한다.  
+ Zuul에서는 동기 방식인 Tomcat 서버를 사용을 했지만, Spring Cloud API-Gateway를 사용하면 비동기 방식인 Netty가 작동을 한다.
 
-  ![](https://i.postimg.cc/jdDQDQ6c/2024-07-31-16-50-50.png)
+![](https://i.postimg.cc/jdDQDQ6c/2024-07-31-16-50-50.png)
 
 </details>
-
 
 <details>
   <summary>part 5 / Spring Cloud Gateway Filter</summary>
   <div markdown="1"></div>
-  Gateway에서의 Filter는 어떻게 동작이 되는지 확인하겠다.   
+  Gateway에서의 Filter는 어떻게 동작이 되는지 확인하겠다.
 
-  ![](https://i.postimg.cc/DwkFWh4z/Filter.png)
+![](https://i.postimg.cc/DwkFWh4z/Filter.png)
 
-  클라이언트가 Gateway에게 요청을 전달하면, Gateway에서 어떤 서비스로 이동을 할 것인가 판단을 하고 이동을 한다.
+클라이언트가 Gateway에게 요청을 전달하면, Gateway에서 어떤 서비스로 이동을 할 것인가 판단을 하고 이동을 한다.
 
-   
 </details>
 
 <details>
   <summary>part 6 / Gateway Filter Routing configuration in JAVA code</summary>
   <div markdown="1"></div>
 
- apigateway-service파일 내 yml파일에서 cloud 관련 설정을 주석 처리 후 자바 파일 내부에서 이를 설정을 할 것이다.
+apigateway-service파일 내 yml파일에서 cloud 관련 설정을 주석 처리 후 자바 파일 내부에서 이를 설정을 할 것이다.
 
 ![](https://i.postimg.cc/0NvDVyZ3/2024-08-01-20-32-47.png)
 
-위코드에서 `r.path` 부분의 값의 요청이 들어오면 `uri`부분으로 이동을 한다.   
-그리고 필터 부분에서  요청과, 응답으로 두 가지로 등록을 할 수 있다.   
-헤더 부분에 어떠한 값을 저장할려고 하면 `K-V`형태로 저장을 하면 된다.  
+위코드에서 `r.path` 부분의 값의 요청이 들어오면 `uri`부분으로 이동을 한다.  
+그리고 필터 부분에서 요청과, 응답으로 두 가지로 등록을 할 수 있다.  
+헤더 부분에 어떠한 값을 저장할려고 하면 `K-V`형태로 저장을 하면 된다.
 
 ( 위 코드에서 `.addRequestHeader`가 중복되어 있는데 아래의 코드를 `.addResponseHeader`로 수정)
 
 ![](https://i.postimg.cc/VLSq6Td7/2024-08-01-20-32-06.png)
 
-이제 출력이 잘 되는지 확인을 하면 
+이제 출력이 잘 되는지 확인을 하면
 ![](https://i.postimg.cc/8zZfmmJF/2024-08-01-20-39-37.png)
 ![](https://i.postimg.cc/7LcCpPNw/2024-08-01-20-43-53.png)
 Request Header와 Response Header가 잘 나타난다.
@@ -326,42 +325,68 @@ Request Header와 Response Header가 잘 나타난다.
   <summary>part 7 / configuration in Yml file</summary>
   <div markdown="1"></div>
 
-저번 단계에서 자바 코드로 작성한 내용을 다시 yml파일에서 설정을 하기 위해서 기존에 작성한 JAVA코드는 주석처리 후, yml파일에서 주석을 해제를 한다.   
-그리고 추가적인 Fliter를 설정하기 위해서 
-전 단게에서 작성한 Fliter 클래스에 내용 주석 처리 그리고 yml 내용 주석 해제 후 
+저번 단계에서 자바 코드로 작성한 내용을 다시 yml파일에서 설정을 하기 위해서 기존에 작성한 JAVA코드는 주석처리 후, yml파일에서 주석을 해제를 한다.  
+그리고 추가적인 Fliter를 설정하기 위해서
+전 단게에서 작성한 Fliter 클래스에 내용 주석 처리 그리고 yml 내용 주석 해제 후
+
 ```yaml
 filters:
   - AddRequestHeader = first-request, first-request-header2
   - AddResponseHeader = first-response, first-response-header2
 ```
-추가 작성을 하고 Postman으로 테스트를 하면    
+
+추가 작성을 하고 Postman으로 테스트를 하면  
 ![](https://i.postimg.cc/6qS0RWf3/2024-08-02-16-31-03.png)
 header값이 잘 나타나는 것을 확인 가능하다.
+
 </details>
 
 <details>
   <summary>part 8 / Custom Filter </summary>
   <div markdown="1"></div>
 
-![](https://i.postimg.cc/Z5xhPnC0/2024-08-02-17-05-56.png)   
+![](https://i.postimg.cc/Z5xhPnC0/2024-08-02-17-05-56.png)
 
-`AbstractGatewayFilterFactory`를 상속을 받은 후 메소드를 재정의 하여 
+`AbstractGatewayFilterFactory`를 상속을 받은 후 메소드를 재정의 하여
 간단하게 로그를 출력하는 필터를 설정하였다.
 
 이후 yml파일로 가서 기존의 작성한 필터 내용을 제거를 하고
+
 ```ymal
 -filters
   -CustomFilter
 ```
-이 처럼 커스텀 필터를 적용하고 실행을 해보면
 
+이 처럼 커스텀 필터를 적용하고 실행을 해보면
 
 ```
 ... : Custom PRE filter : Request ID -> 0832b3a0-3
 ... : Custom POST filter : Response code -> 200 OK
 
 ```
+
 이 처럼 콘솔 부분에 의도한 방향대로 문구가 잘 출력 되는 것을 확인 가능하다.
+
+</details>
+
+<details>
+  <summary>part 9 / Global Filter </summary>
+  <div markdown="1"></div>
+  필요한 필터가 있을 경우 CustomFilter처럼 정의를 하면 되는데, 공통적인 필터가 필요할 경우 매번 작성하는 것이 아닌 GlobalFilter를 지정하여 한번에 적용 시킬 수 있다.
+
+작성은 CustomFilter와 유사하게 작성, 그리고 설정은 yaml 파일로 돌아와서 `default-filters`로 설정
+
+```yaml
+cloud:
+gateway:
+  default-filters:
+    - name: GlobalFilter
+      args:
+        baseMessage: Spring Cloud Gateway Global Filter
+        preLogger: true
+        postLogger: true
+```
+
 </details>
 
 _토글_
