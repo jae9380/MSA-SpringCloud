@@ -387,6 +387,32 @@ gateway:
         postLogger: true
 ```
 
+![](https://i.postimg.cc/FKkTtpZ1/Global-Filter-console.png)
+
+</details>
+
+<details>
+  <summary>part 10 / Logging Filter</summary>
+  <div markdown="1"></div>
+
+Gateway Client -> Gateway Handler -> Global Filter -> Custom Filter -> Logging Filter -> Proxied Service
+
+이 순서로 동작을 할 것이다.
+
+LoggingFilter 코드 작성 후, 해당 필터 클래스를 적용을 할려고 하면 적용시킬 부분에 추가로 작성을 하면 된다.
+
+First-Service에는 적용하지 않고, Second-Service에 적용을 하였다. 적용을 할 때 하나의 필터만 존재를 할 때 filters 부분에 name을 추가 작성을 하지 않아도 적용이 되지만, 2개 이상의 필터를 적용시킬 경우에는 name을 붙여야만 한다.  
+![](https://i.postimg.cc/Lsq2rcwf/Logging-Filter-yaml.png)
+
+콘솔 부분에서 출력된 내용을 보면 기존에 말 했던 실행 순서와는 다른 순서로 출력이 되었따.  
+![](https://i.postimg.cc/cLyRgWM1/Logging-Filter-console.png)  
+그 이유로는 필터의 우선 순위 설정을 높게 설정되어 있기 때문에 이러한 순서가 나타난 것이다.
+
+```java
+ OrderedGatewayFilter.HIGHEST_PRECEDENCE
+//  HIGHEST_PRECEDENCE를 LOWEST_PRECEDENCE 설정을 하면 의도한 순서대로 나타날 것이다.
+```
+
 </details>
 
 _토글_
