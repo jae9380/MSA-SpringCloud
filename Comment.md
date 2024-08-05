@@ -416,7 +416,7 @@ First-Service에는 적용하지 않고, Second-Service에 적용을 하였다. 
 </details>
 
 <details>
-  <summary>part</summary>
+  <summary>part 11 / Load Balancer</summary>
   <div markdown="1"></div>
   * Eureka 연동   
   Eureka Server는 Service Discovery, Registration 역활을 하게된다.   
@@ -427,6 +427,14 @@ apigateway 프로젝트로 돌아와서 yaml 파일에서 등록한 서비스 �
  `routes: `에 설정한 `uri`의 값을 `lb://MY-FIRST(SECOND)-SERVICE`로 설정해준다.
 
 위 설정들을 하면 http프로토콜을 이용하여 각 서비스로 가는 것이 아닌 Eureka server로 가서 클라이언트 요청 정보를 전달해주게 된다.
+
+![](https://i.postimg.cc/NFRgv2Dh/load-Balancer.png)  
+각 서비스를 2개를 실행시켰다.
+
+이 상황에서 하나의 서비스에 접근 시킬 때, 해당 서비스는 어떠한 포트의 서비스에 접속을 했는지에 대하서는 아직 확인은 불가능하다.
+
+이 부분에 대하여 어떤 방식으로 구동이 되는지 확인하기 위해서 각 서비스의 포트를 랜덤포트로 할당하게 설정을 하고, 해당 서비스를 check로 접속하게 되면 포트번호를 출력하게 설정 한 뒤, 서비스를 2개를 실행하고 접속을 했을 때 처음에는 `A`라는 포트로 접속이 되었고, 페이지를 새로 고쳤을 때 `B`라는 포트로 접속이 되었다. 여기서 다시 새로고침을 하면 이번에는 `A`로 다시 접속하게 되었다.  
+이렇게 하운드 라운드 로빈 방식으로 Gateway가 호출을 해주는 것을 확인 가능하다.
 
 </details>
 
