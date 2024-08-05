@@ -415,6 +415,21 @@ First-Service에는 적용하지 않고, Second-Service에 적용을 하였다. 
 
 </details>
 
+<details>
+  <summary>part</summary>
+  <div markdown="1"></div>
+  * Eureka 연동   
+  Eureka Server는 Service Discovery, Registration 역활을 하게된다.   
+  지금까지 8081, 8082 port를 갖는 first, second service가 있을 때,    
+   `http://localhost:8000/~~`의 요청이 들어오면 API Gateway를 거쳐 Eureka를 경유하여 해당 서비스의 위치를 전달 받고, Gateway가 해당 서비스로 포워딩을 하게 해준다.
+
+apigateway 프로젝트로 돌아와서 yaml 파일에서 등록한 서비스 설정에서  
+ `routes: `에 설정한 `uri`의 값을 `lb://MY-FIRST(SECOND)-SERVICE`로 설정해준다.
+
+위 설정들을 하면 http프로토콜을 이용하여 각 서비스로 가는 것이 아닌 Eureka server로 가서 클라이언트 요청 정보를 전달해주게 된다.
+
+</details>
+
 _토글_
 
 ```html
