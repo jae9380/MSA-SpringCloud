@@ -12,3 +12,4 @@
   * Spring Cloud Discovery - Netflix Eureka Client
   * Developer Tools - Lombok, Spring Boot DevTools
   * Web - Spring Web 
+  * Database : H2 Database
