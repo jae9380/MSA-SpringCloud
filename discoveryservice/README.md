@@ -1,14 +1,12 @@
-# Spring Cloud Netflix Eureka 클라이언트 프로젝트
+# Spring Cloud Netflix Eureka 서버 프로젝트
 
-# [Eureka Server Project](https://github.com/jae9380/NetflixEurekaPractice)
+# [Eureka Server Project](https://github.com/jae9380/user-service)
 
-# Eureka Client Project
+# Eureka Server Project
 
-### 환경
+### 환경 
 * java version : 17
 * spring boot version : 3.2.8
 * build tool : Maven
-* dependency :
-  * Spring Cloud Discovery - Netflix Eureka Client
-  * Developer Tools - Lombok, Spring Boot DevTools
-  * Web - Spring Web 
+* dependency : 
+  * Spring Cloud Discovery - Netflix Eureka Server
