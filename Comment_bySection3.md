@@ -43,12 +43,20 @@
   </div>
 </details>
 
-
+<details>
+  <summary>part 2 / H2Database config</summary>
+  <div markdown="1">
+    ## H2 Database 설정   
+    H2 데이터 베이스 설정을 위해서 [MAVEN REPOSITORY](https://mvnrepository.com/artifact/com.h2database/h2)로 들어가서 복사하여 추가    
+    그리고 스코프의 값을 test를 했을 때, 결과를 확인할 수 없기 때문에 test -> runtime으로 변경해준다. 그리고 yml파일 설정
+  </div>
+</details>
 _토글_
 
 ```html
 <details>
   <summary>part</summary>
-  <div markdown="1"></div>
+  <div markdown="1">
+  </div>
 </details>
 ```
