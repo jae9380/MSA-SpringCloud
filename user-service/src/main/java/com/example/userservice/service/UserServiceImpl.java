@@ -25,6 +25,9 @@ public class UserServiceImpl implements UserService{
         userEntity.setEncryptedPwd("encrypted_password"); // 아직 구현X 그래서 기본값
 
         userRepository.save(userEntity);
-        return null;
+
+        UserDto userDto1 =mapper.map(userEntity, UserDto.class);
+
+        return userDto1;
     }
 }
