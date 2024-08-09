@@ -23,10 +23,7 @@ public class WebSecurity {
         http.authorizeHttpRequests((authz) -> authz
                 .requestMatchers(new AntPathRequestMatcher("/users/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                .requestMatchers("/**").access(
-                        new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1')or hasIpAddress('192.168.0.33')")
-                )
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
         );
         http.headers().frameOptions().disable();
           return http.build();
