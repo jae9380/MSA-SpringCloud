@@ -37,6 +37,10 @@ insert into catalog(product_id, product_name, stock, unit_price)
     values('CATALOG-003', 'Stockholm', 120, 2000);
 ```
 
+이후 API-Gateway 등록하기 위해서 api-gateway 프로젝트에서 설정 작업 진행
+
+작업이 잘 진행되었는지 확인하기 위해서 Postman에서 `127.0.0.1:8000/catalog-service/catalogs` GET요청을 날려서 앞에서 데이터베이스에 입력한 데이터가 출력되면 작업이 잘 끝났다.
+
   </div>
 </details>
 
