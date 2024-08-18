@@ -21,8 +21,6 @@
 
 - APIs
 
-| 기능                     | 마이크로 서비스       | URI                             | HTTP Method | 여부 |
-| ------------------------ | --------------------- | ------------------------------- | ----------- | ---- |
-| 상품 목록 조회           | Catalogs Microservice | /catalog-service/catalogs       | GET         | O    |
-| 사용자 별 상품 주문      | Orders Microservice   | /order-service/{user_id}/orders | POST        | X    |
-| 사용자 별 주문 내역 조회 | Orders Microservice   | /order-service/{user_id}/orders | GET         | X    |
+| 기능           | 마이크로 서비스       | URI                       | HTTP Method | 여부 |
+| -------------- | --------------------- | ------------------------- | ----------- | ---- |
+| 상품 목록 조회 | Catalogs Microservice | /catalog-service/catalogs | GET         | O    |
