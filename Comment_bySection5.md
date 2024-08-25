@@ -10,6 +10,7 @@
 <details>
   <summary>part 1 / </summary>
   <div markdown="1">   
+  
 로그인 시 사용자가 전달한 값을 저장하기 위한 클래스로 RequestLogin 생성
 
 - UsernamePasswordAuthenticationFilter
@@ -61,6 +62,8 @@ UsernamePasswordAuthenticationToken 객체를 생성하여, 사용자가 입력�
 
 JSON 파싱 과정에서 발생할 수 있는 IOException을 처리하기 위해 예외 처리를 한다.  
 만약 JSON 파싱에 실패하면, RuntimeException을 발생시킵니다.
+
+
 
   </div>
 </details>
