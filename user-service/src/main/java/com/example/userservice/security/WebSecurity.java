@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
 @Configuration
@@ -24,31 +25,34 @@ public class WebSecurity {
 
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ObjectPostProcessor<Object> objectPostProcessor;
-
-    private static final String[] WHITE_LIST = {
-            "/users/**",
-            "/",
-            "/**"
-    };
+    private final Environment env;
 
     @Bean
     protected SecurityFilterChain config(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
-        http.authorizeHttpRequests(authorize -> {
-                    try {
-                        authorize
-                                .requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
-                                .and()
-                                .addFilter(getAuthenticationFilter());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
+
+        http.csrf( (csrf) -> csrf.disable());
+
+        http.authorizeHttpRequests((authz) -> authz
+                                .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/users", "POST")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/welcome")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/health-check")).permitAll()
+                                .requestMatchers("/**").access(
+                                        new WebExpressionAuthorizationManager("hasIpAddress('127.0.0.1') or hasIpAddress('192.168.55.187')")) // host pc ip address
+                                .anyRequest().authenticated()
+                )
+                .authenticationManager(authenticationManager)
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http.addFilter(getAuthenticationFilter(authenticationManager));
+
         return http.build();
     }
 
@@ -57,11 +61,8 @@ public class WebSecurity {
         return auth.build();
     }
 
-    private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-        AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
-        authenticationFilter.setAuthenticationManager(authenticationManager(builder));
-        return authenticationFilter;
+    private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception {
+        return new AuthenticationFilter(authenticationManager, userService, env);
     }
 
 }
