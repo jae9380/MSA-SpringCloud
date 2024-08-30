@@ -63,7 +63,29 @@ UsernamePasswordAuthenticationToken 객체를 생성하여, 사용자가 입력�
 JSON 파싱 과정에서 발생할 수 있는 IOException을 처리하기 위해 예외 처리를 한다.  
 만약 JSON 파싱에 실패하면, RuntimeException을 발생시킵니다.
 
+  </div>
+</details>
 
+<details>
+  <summary>part4 / JWT Token</summary>
+  <div markdown="1">
+
+전통적인 인증 시스템  
+클라이언트와 서버 사이 인증을 할 때, userName 과 password를 전달을 하여 데이터베이스에서 검사를 하여 세션을 발부하고, 그 세션을 이용하여 부가적인 동작을 진행을 하였다.
+
+이러한 세션, 쿠키 방법은 모바일 어플리케이션에서 유효하게 사용할 수 없다는 점과 핸더링된 HTML페이지가 반환되지만, 모바일 어플리케이션에서는 JSON(or XML)과 같은 포멧이 필요하다.
+
+그래서 나타난 방법이 Token 기반의 인증 시스템이다.  
+일단 먼저 클라이언트가 사용자 한테 Authentication요청으로 userName과 password을 받아서 서버에서 인증 절차를 거친 후 세션을 발급하는 것이 아닌 토큰을 발급 한다.
+
+[JWT](https://jwt.io/) Token 기반의 인증은 인증 헤더 내에서 사용되는 토큰 포멧으로 두 개의 시스템 사이에 안전한 방법으로 통신이 가능하다.
+
+JWT 장점
+
+- 독립적으로 클라이언트와의 통신이 가능한 방법이 생긴다.
+- `CDN (Content Delivery Network)`라고 해서 중간 단계에서 캐시 서브를 놓을 수 있는데, 캐시 서버하고 인증 처리를 가능하게 해준다.
+- 사이트 간 요청 정보 자체가 위변조가 될 가능성이 현저하게 떨어진다.
+- 토큰 값을 다양한 형태로 저장하여 사용할 수 있다.
 
   </div>
 </details>
