@@ -69,12 +69,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         log.debug(userName);
         UserDto userDetails = userService.getUserDetailByEmail(userName);
 
+        byte[] secretKeyBytes = Base64.getEncoder().encode(env.getProperty("token.secret").getBytes());
+
+        SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);
+
         Instant now = Instant.now();
 
         String token = Jwts.builder()
                 .subject(userDetails.getUserId())
                 .expiration(Date.from(now.plusMillis(Long.parseLong(env.getProperty("token.expiration_time")))))
                 .issuedAt(Date.from(now))
+                .signWith(secretKey)
                 .compact();
 
         response.addHeader("token", token);
