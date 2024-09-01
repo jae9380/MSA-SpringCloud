@@ -31,7 +31,7 @@ logging:
 
 token:
   expiration_time: 86400000
-  secret: '01234567890123456789012345678901234567890123456789'
+  secret: verylongandsecuresecretkeythatisatleast32characters
 
 greeting:
   message: Welcome to the Simple E-commerce.

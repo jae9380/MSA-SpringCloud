@@ -80,4 +80,4 @@ spring:
                 postLogger: true
 
 token:
-  secret: '01234567890123456789012345678901234567890123456789'
+  secret: verylongandsecuresecretkeythatisatleast32characters

@@ -42,18 +42,20 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     // login -> token -> users (with token) -> header (include token)
     @Override
     public GatewayFilter apply(Config config) {
-        return ((exchange, chain) -> {
-           ServerHttpRequest request = (ServerHttpRequest) exchange.getRequest();
+        return (exchange, chain) -> {
+            ServerHttpRequest request = exchange.getRequest();
 
-           if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) return onError(exchange,"No authorization header", HttpStatus.UNAUTHORIZED);
+            if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
+                return onError(exchange, "No authorization header", HttpStatus.UNAUTHORIZED);
 
-           String authorizationHeader = request.getHeaders().get(org.springframework.http.HttpHeaders.AUTHORIZATION).get(0);
-           String jwt = authorizationHeader.replace("Bearer", "");
+            String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            String jwt = authorizationHeader.replace("Bearer ", "");
 
-           if (!isJwtValid(jwt)) return onError(exchange,"JWT Token is not valid", HttpStatus.UNAUTHORIZED);
+            if (!isJwtValid(jwt))
+                return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
 
             return chain.filter(exchange);
-        });
+        };
     }
 
     private boolean isJwtValid(String jwt) {
@@ -70,7 +72,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                     .setSigningKey(signingKey)
                     .build();
 
-            subject=jwtParser.parseClaimsJwt(jwt).getBody().getSubject();
+            subject=jwtParser.parseClaimsJws(jwt).getBody().getSubject();
         }catch (Exception e) {
             returnValue = false;
         }
