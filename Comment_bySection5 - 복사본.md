@@ -1,4 +1,4 @@
-# Section 5
+# Section 6
 
 ## Configuration Srvice
 
@@ -13,8 +13,51 @@
 마지막으로 구성정보 파일을 하나만 만들어서 사용하는 것이 아닌 마이크로 서비스가 개발이되고 운영이 되는 각 단계에 맞춰서 설정 파일을 바꿔서 사용이 가능한 프로파일을 만드는 것을 확인 할 것이다.
 
 <details>
-  <summary>part 1 / </summary>
+  <summary> Spring CLoud Config</summary>
   <div markdown="1">
+
+## Spring Cloud Config
+
+- 분산 시스템에서 서버, 클라이언트 구성에 필요한 정보(application.yml)를 외부에서 관리
+- 하나의 중앙화 된 저장소에서 구성 요소 관리 가능
+- 각 서비스를 재빌드를 하지 않고, 즉시 적용이 가능
+- 어플리케이션 배포 파이프 라인을 통하여 `DEV-AUT-PROD`환경에 맞는 구성 정보 사용
+  - 각각의 환경마다 사용하는 환경 설정이 다를 수 있다. 예를 들어 데이터베이스 정보, 게이트웨이의 IP 주소, 테스트를 위한 어떤 특정한 값이라든가 환경마다 다르게 가질 수 있다.
+    여기서 다르게 가질 수 있다라는 것은 각 환경에 따라 자유로운 변경이 가능해야 한다.
+
+![](https://i.postimg.cc/LXVMBFTQ/1-Sck-Da-Xx-M3o9nds3-FZMZIz-Q.webp)
+
+  </div>
+</details>
+
+<details>
+  <summary>part 1 / Created Config service Project </summary>
+  <div markdown="1">
+
+해당 파일은 설정하고 push는 하지 않을 생각이다. 왜냐하면 해당 파일의 설정 내용은 로컬에서 한정적으로 관리하기 위해서다.
+
+프로젝트 생성 후 어플리케이션 파일에 `@EnableConfigServer` 어노테이션을 추가한다.  
+해당 어노테이션은 Spring Cloud Config Server를 활성화하기 위한 설정이다. 해당 어노테이션을 사용하면 애플리케이션이 외부 Git, SVN, 파일 시스템 등에서 구성 정보를 가져와서 클라이언트 애플리케이션에 제공하는 역할을 한다.  
+즉, 분산 환경에서 중앙 집중식으로 설정을 관리할 수 있게 해준다.
+
+yaml설정 파일로 이동하여
+
+```yaml
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///C://Users//ljy53/Desktop/git/git-local-repo
+```
+
+이 처럼 폴더 위치를 지정을 해주고 프로젝트를 실행을 해준다.  
+[ecommerce.yml](http://localhost:8888/ecommerce/default)확인을 하면 설정 코드가 나타날 것이다.
+
+여ꈰ서 `ecommerce/default`로 접속을 하였다. 추가적으로 `ecommerce/test`로 접속을 하게되면 같은 파일의 내용을 보여준다.  
+이는 test라는 프로파일이 없기 때문에 default를 보여준 것이다.
 
   </div>
 </details>
