@@ -62,6 +62,58 @@ spring:
   </div>
 </details>
 
+<details>
+  <summary>part 2 / </summary>
+  <div markdown="1">
+  
+  이제 User Microsevice에서 사용하기 위해서 Dependencies를 추가 (spring-cloud-starter-config, spring-cloud-starter-bootstrap) 그리고 `spring.cloud.bootstrap.enable=true`설정을 해준다.
+
+`application.yml`보다 우선 순위가 높은 `bootstrap.yml`파일을 생성한다.
+
+```yaml
+spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: ecommerce
+```
+
+원래 갖고 있는 yml파일의 특정한 부분을 떼어서 별도의 공용 서버 같은 역활을 해주는 Spring Cloud Config 서버를 이용하겠다는 것이 목적이다.  
+그래서 해당 부분을 떼어서 별도로 따로 저장을 시켰는데 그러려면 해당 부분이 읽어지는 부분들을 `application.yml`파일 보다 먼저 작업을 해야지만 전체적으로 우리가 필요했던 모든 리소스가 맞아 떨아진다.  
+따라서 `Spring Cloud Cofig`에 대한 정보를 먼저 등록해 줄 수 있는 파일이 필요하다. 해당 역활을 해주는 것이 `bootstrap.yml`파일을 등록 하므로 외부에 있는 컴퓨터 서버의 정보 파일을 등록해주는 작업이다.
+
+---
+
+이제 User-Service프로젝트에 토큰관련 정보들은 주석처리를 할 것이다. 그 이유는 이제 해당 정보를 `Spring Cloud Config`를 통하여 정보를 갖고 올 것이기 때문이다.
+
+`pom.xml`으로 이동하여 2개의 Dependencies를 추가를 하고 프로젝트를 실행하면  
+![](https://i.postimg.cc/Hn0Xkrcz/config2.png)  
+이 처럼 comfiguration 서버의 위치, 이름, 위치정보 또한 잘 나타내준다.  
+그리고 health_check 메소드를 변경하여 정보를 잘 갖고 오는지 확인하기 위해서 변경했기에 확인을 하면 정보를 잘 갖고온다.
+
+여기서 만약 Configuration의 정보를 변경하게 된다면 다시 갖고와야 한다.  
+정보를 다시 갖고 올려면 서버를 재 기동을 하거나, Spring Boot의 `Actuator`기능을 사용하는 방법이다. `Actuator`의 `Refresh`라는 기능을 사용하면 재부팅을 하지 않은 상태에서도 필요한 정보를 얻을 수 있다.  
+마지막 방법으로는 `Spring Cloud Bus`를 사용하는 방법이 있다. 해당 방법은 `Actuator`를 사용하는 것 보다 훨씬 더 효율적으로 정보를 갖고 올 수 있다.
+
+일단 먼저 `Actuator`을 사용하는 방법을 살펴 볼 것이다.  
+Spring Boot의 `Actuator`라는 것은 어플리케이션의 상태라든가 어플리케이션을 모니터링을 할 수 있는 작업을 이야기한다.
+
+별도의 어플리케이션을 기동하지 않더라도 단순히 Dependency를 추가하여 각종 Metric, 지표, 수치를 수집하기 위한 엔드포인트를 제공해준다.
+
+`Actuator`관련된 모든 코드는 `/actuator`로 시작을 한다. 이러한 정보들은 로그인을 거치지 않고도 사용하기 위해 `permitAll`속성을 추가해준다.  
+그리고 아래와 같이 추가적으로 작성을 해준다.
+
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+```
+
+  </div>
+</details>
+
 _토글_
 
 ```html

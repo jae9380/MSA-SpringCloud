@@ -29,9 +29,15 @@ logging:
   level:
     com.example.userservice: DEBUG
 
-token:
-  expiration_time: 86400000
-  secret: verylongandsecuresecretkeythatisatleast32characters
+#token:
+#  expiration_time: 86400000
+#  secret: verylongandsecuresecretkeythatisatleast32characters
 
 greeting:
   message: Welcome to the Simple E-commerce.
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
