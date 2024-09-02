@@ -63,7 +63,7 @@ spring:
 </details>
 
 <details>
-  <summary>part 2 / </summary>
+  <summary>part 2 / Apply Spring Cloud Config functionality to User-Service</summary>
   <div markdown="1">
   
   이제 User Microsevice에서 사용하기 위해서 Dependencies를 추가 (spring-cloud-starter-config, spring-cloud-starter-bootstrap) 그리고 `spring.cloud.bootstrap.enable=true`설정을 해준다.
@@ -109,6 +109,29 @@ management:
     web:
       exposure:
         include: refresh, health, beans
+```
+
+  </div>
+</details>
+
+<details>
+  <summary>part 3 /  Apply Spring Cloud Config functionality to API Gateway-Service</summary>
+  <div markdown="1">
+
+이번에는 API Gateway 프로젝트에 전에 설정한 내용을 추가를 한다.  
+이 프로젝트에서는 나머지는 다 비슷하게 작성을 했지만, 전과는 다르게 `Actuator`에서 `httptrace`기능을 사용하기 위해 추가적으로 작성을 해준다.
+
+> Spring 3버전에서 부터 `Actuator`의 `httptrace`는 `httpexchanges`로 변경되었다.
+
+```yaml
+- id: user-service
+  uri: lb://USER-SERVICE
+  predicates:
+    - Path=/user-service/actuator/**
+    - Method=GET,POST
+  filters:
+    - RemoveRequestHeader=Cookie
+    - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 ```
 
   </div>
