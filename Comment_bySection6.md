@@ -137,6 +137,25 @@ management:
   </div>
 </details>
 
+<details>
+  <summary>part 4 / Set configuration information differently in a multi-environment</summary>
+  <div markdown="1">
+  
+  각각의 마이크로 서비스에서 구성 정보를 다르게 설정하여 실행을 해보겠다.
+
+각 환경에서 사용할 yaml파일을 생성 한 뒤 이름 뒤에 어떤 환경에 사용을 할 것인지 명시를 해준다. 그리고
+
+```yaml
+spring:
+  profiles:
+    active: dev #(or test, prod, ...)
+```
+
+`active` 부분에 어떤 환경의 구성 파일을 사용을 할 것인지 명시해준다.
+
+  </div>
+</details>
+
 _토글_
 
 ```html
