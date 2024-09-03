@@ -32,6 +32,13 @@
   
 ## MAC OS
 
+#### step 1. ERLANG
+[RabbitMQ](https://www.rabbitmq.com/)
+
+일단 먼저 `brew`를 업데이트 해준다.   
+
+
+
 ## Windows
 
 윈도우 환경에서 `rabbitMQ`를 설치하기 위해서는 `Erlang`을 먼저 설치를 해야 한다.
@@ -57,6 +64,16 @@ http://127.0.0.1:15672 로 접속을 해보면 RabbitMQ가 나타날 것이다.
 
 - 만약 RabbitMQ가 나타나지 않을 경우
 
+ 결국 두 환경에서 `RabbitMQ` 실행에 있어 문제가 발생해서 Docker 컨테이너로 생성하여 실습을 진행하기로 결정
+
+ ```docker
+docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/16 ecommerce-network
+
+docker run -d --name rabbitmq --network ecommerce-network \
+ -p 15672:15672 -p 5672:5672 -p 15671:15671 -p 5671:5671 -p 4369:4369 \
+ -e RABBITMQ_DEFAULT_USER=guest \
+ -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:management
+ ```
   </div>
 </details>
 
