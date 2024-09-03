@@ -178,7 +178,8 @@ spring:
   <summary>part 6 / Native file repository</summary>
   <div markdown="1">
   
-  이전까지 Git에다가 저장하는 것이 아닌 로컬 파일 시스템이 직접 저장하는 방법을 확인하겠다.
+  이전까지 Git에다가 저장하는 것이 아닌 로컬 파일 시스템이 직접 저장하는 방법을 확인하겠다.    
+  [Native file repo](https://github.com/jae9380/spring-cloud-config) 폴더 내부에 구성파일이 들어있다.
 
   </div>
 </details>
