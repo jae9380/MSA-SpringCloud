@@ -156,6 +156,33 @@ spring:
   </div>
 </details>
 
+<details>
+  <summary>part 5 / Remote Git Repository</summary>
+  <div markdown="1">
+  기존 방법은 로컬에 있는 파일을 갖고 왔지만, git 레포지터리에서 파일을 갖고 올 수 있다.
+
+```yaml
+        uri: file:///C://Users//ljy53/Desktop/git/git-local-repo
+        uri: https://github.com/jae9380/spring-cloud-config.git
+        username: [username]
+        password: [password]
+
+```
+
+만약 public이 아닌 레포지터리라면 아이디와 비밀번호를 명시해야 한다.
+
+  </div>
+</details>
+
+<details>
+  <summary>part 6 / Native file repository</summary>
+  <div markdown="1">
+  
+  이전까지 Git에다가 저장하는 것이 아닌 로컬 파일 시스템이 직접 저장하는 방법을 확인하겠다.
+
+  </div>
+</details>
+
 _토글_
 
 ```html
