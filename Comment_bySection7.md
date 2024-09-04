@@ -33,11 +33,10 @@
 ## MAC OS
 
 #### step 1. ERLANG
+
 [RabbitMQ](https://www.rabbitmq.com/)
 
-일단 먼저 `brew`를 업데이트 해준다.   
-
-
+일단 먼저 `brew`를 업데이트 해준다.
 
 ## Windows
 
@@ -64,16 +63,64 @@ http://127.0.0.1:15672 로 접속을 해보면 RabbitMQ가 나타날 것이다.
 
 - 만약 RabbitMQ가 나타나지 않을 경우
 
- 결국 두 환경에서 `RabbitMQ` 실행에 있어 문제가 발생해서 Docker 컨테이너로 생성하여 실습을 진행하기로 결정
+결국 두 환경에서 `RabbitMQ` 실행에 있어 문제가 발생해서 Docker 컨테이너로 생성하여 실습을 진행하기로 결정
 
- ```docker
-docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/16 ecommerce-network
+```docker
+
+# docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/16 ecommerce-network
+docker network create --gateway 172.19.0.1 --subnet 172.19.0.0/16 ecommerce-network
+# 172.18 에서 172.19로 변경
 
 docker run -d --name rabbitmq --network ecommerce-network \
- -p 15672:15672 -p 5672:5672 -p 15671:15671 -p 5671:5671 -p 4369:4369 \
- -e RABBITMQ_DEFAULT_USER=guest \
- -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:management
- ```
+-p 15672:15672 -p 5672:5672 -p 15671:15671 -p 5671:5671 -p 4369:4369 \
+-e RABBITMQ_DEFAULT_USER=guest \
+-e RABBITMQ_DEFAULT_PASS=guest rabbitmq:management
+```
+
+  </div>
+</details>
+
+<details>
+  <summary>part 3 / AMQP</summary>
+  <div markdown="1">
+  
+  Spring Cloud Bus를 사용하기 위해서 각각 dependency를 추가를 한다.   
+  * Config Server - AMQP for Spring Cloud Bus, Actuator   
+  * Users Microservice, Gateway Service - AMQP for Spring Cloud Bus
+  
+`RabbitMQ`컨테이너를 실행을 하고    
+```yaml
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+```
+이렇게 연결을 하기 우ㅣ해 설정을 해준다.
+
+이후 `busrefresh`의 동작을 하기 위해서 기존 yml파일에서 토큰에 #1을 추가로 작성하여 기존의 값과 다르게 변경을 하였다. 이후 해당 포트로 접속하여 변경된 부분이 잘 작용되었는지 확인한다.
+
+토큰관련하여 변경된 부분이 잘 적용이 되었는데 아직 프로젝트 내에서는 기존의 변경된 시점 이전의 토큰을 이용하고 있다. 이러한 부분을 해결하기 위해서는 `busrefresh`동작을 해보겠다.
+
+`127.0.0.1:8000/user-service/actuator/busrefresh , POST` 날려보겠다.
+
+해당 동작을 완료하게 되면 User-Microservice와 Gateway-Service에 콘솔을 확인하면
+
+```
+2024-09-04T11:37:23.424+09:00  INFO 21256 --- [user-service] [foReplicator-%d] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_USER-SERVICE/user-service:54b4246e40d227085b6a89a2ef984785 - registration status: 204
+
+2024-09-04T11:37:23.519+09:00  INFO 24340 --- [apigateway-service] [nfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_APIGATEWAY-SERVICE/DESKTOP-UBM6CI1.mshome.net:apigateway-service:8000 - registration status: 204
+```
+
+두 프로젝트에 이렇게 문구가 출력이 된다.
+
+그 이유는 User-Microservice에 변경되었다고 알려주면 `RabbitMQ`에 연결되어 있는 다른 클라이언트 모든 곳에 해당하는 메세지가 푸시 기능으로 전달되었기 때문이다.
+
+그래서 기존 토큰값으로 이용을 하면 변경된 토큰 정보를 사용하지 않았기 때문에 이증에는 실패가 된다.  
+(이러면 변경된 정보를 잘 갖고오는 것이다.)
+
+이렇게 Spring Cloud Bus를 이용하면 여러개의 마이크로 서비스가 있다고 하더라도 단 한 번의 `Refresh`로 여러개의 마이크로 서비스가 있다 하더라도 한 번에 `Refresh`가 가능하게 된다.
+
   </div>
 </details>
 

@@ -4,14 +4,19 @@ server:
 spring:
   application:
     name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   profiles:
     active: native
   cloud:
     config:
       server:
         native:
-          #search-locations: file:///${user.home}/Desktop/git/native-file-repo # Windows
-          search-locations: file://${user.home}/Desktop/git/spring-cloud-config/native-file-repo # macOS
+          search-locations: file:///${user.home}/Desktop/git/git-local-repo/native-file-repo # Windows
+#          search-locations: file://${user.home}/Desktop/git/spring-cloud-config/native-file-repo # macOS
         git:
 #          uri: file:///C://Users//ljy53/Desktop/git/git-local-repo
 #        기존 방법은 로컬에 있는 파일을 갖고 왔지만, git 레포지터리에서 파일을 갖고 올 수 있다.
@@ -19,4 +24,8 @@ spring:
           uri: https://github.com/jae9380/spring-cloud-config.git
 #        만약 public이 아닌 레포지터리라면 아이디와 비밀번호를 명시해야 한다.
 #          username: [username]
-#          password: [password]
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
