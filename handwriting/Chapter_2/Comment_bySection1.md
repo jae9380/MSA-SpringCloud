@@ -47,6 +47,37 @@ spring:
   </div>
 </details>
 
+<details>
+  <summary>part 2 / Practice Asymmetric encryption</summary>
+  <div markdown="1">
+  
+Public, Private Key를 생성을 할 때, JDK KeyTool을 이용 할 것이다.   
+
+``` shell
+keytool -genkeypair -alias apiEncryptionKey -keyalg RSA \
+-dname "CN=Jaeyeol Lee, OU=API Development, O=joneconsulting.co.kr, L=Seoul, C=KR" \
+-keypass "test123" -keystore apiEncryptionKey.jks -storepass "test123"
+```
+이와 같이 작성하여 private Key를 생성하였고, 이제 Public Key 작업을 해야한다.    
+```shell
+keytool -export -alias apiEncryptionKey -keystore apiEncryptionKey.jks -rfc -file trustServer.cer
+```
+ 
+ 이후 Configuration 서버에서 지정한 대칭키 관련 부분을 주석으로 처리하고   
+ ```yaml
+ #  key: abcdabcdabcd
+  key-store:
+    location: file://${user.home}/Desktop/git/spring-cloud-config/keystore/apiEncryptionKey.jks
+    password: test123
+    alias: apiEncryptionKey
+```   
+이와 같이 설정을 해준다.   
+
+데이터베이스의 password를 새로운 암호화 방식의 값으로 변경을 해주고 다음으로 APIGateway에 있는 토큰관련 정보를 암호화를 진행을 할 것이다.   
+
+  </div>
+</details>
+
 _토글_
 
 ```html
