@@ -47,6 +47,51 @@ order_service:
   </div>
 </details>
 
+<details>
+  <summary>part 2 / Feign Web Service Client</summary>
+  <div markdown="1">
+  
+`pom.xml`에 `FeignClient`추가 후, 더 이상 `Rest Template`는 사용하지 않기 때문에 로드발랜서는 주석 처리 후 `@EnableFeignClients`어노테이션 추가
+
+이후 `OrderServiceClient`인터페이스를 생성, 해당 인터페이스는 `@FeignClient(name = "order-service")` 어노테이션에 호출 할 서비스의 이름을 설정해준다.  
+그리고 내부에 선언하고자 하는 메소드 전부 다 `Public`이다. 그래서 따로 지정을 해주지 않아도 된다.
+
+```java
+
+@FeignClient(name = "order-service")
+public interface OrderServiceClient {
+
+    @GetMapping("/order-service/{userId}/orders")
+    List<ResponseOrder>  getOrders(@PathVariable String userId);
+}
+```
+
+인터페이스 생성 후, 해당 코드를 이용할 서비스로직으로 이동하여 생성자를 주입하고
+
+기존에 이용하던 `Rest Template`는 주석으로 처리 후 `Feign Client` 방법으로 변경
+
+```java
+////        Using as Rest Template
+//        String orderUrl = String.format(env.getProperty("order_service.url"),userId);
+//
+//        ResponseEntity<List<ResponseOrder>> orderListResponse =
+//                restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<ResponseOrder>>() {
+//        });
+////        restTemplate.exchange( 매개 값 -> 주소, 메소드 타입, 요청할 때 파라미터, 전달 받고자하는 방식)
+//        List<ResponseOrder> ordersList = orderListResponse.getBody();
+
+//        Using a feign Client
+        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+
+        userDto.setOrders(ordersList);
+```
+
+변경을 하면 기존에는 여러 줄의 코드를 작성을 해야 했다면 해당 방법은 인터페이스 선언 후 한 줄의 코드로 작성할 수 있게 된다.
+
+  </div>
+</details>
+
 _토글_
 
 ```html

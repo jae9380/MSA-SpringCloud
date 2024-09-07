@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.repository.UserRepository;
@@ -30,13 +31,17 @@ public class UserServiceImpl implements UserService{
     Environment env;
     RestTemplate restTemplate;
 
+    OrderServiceClient orderServiceClient;
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                           Environment env, RestTemplate restTemplate) {
+                           Environment env, RestTemplate restTemplate,
+                           OrderServiceClient orderServiceClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.env = env;
         this.restTemplate = restTemplate;
+        this.orderServiceClient = orderServiceClient;
     }
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -65,15 +70,18 @@ public class UserServiceImpl implements UserService{
 
 //        List<ResponseOrder> orders = new ArrayList<>();
 
-//        Using as Rest Template
-        String orderUrl = String.format(env.getProperty("order_service.url"),userId);
+////        Using as Rest Template
+//        String orderUrl = String.format(env.getProperty("order_service.url"),userId);
+//
+//        ResponseEntity<List<ResponseOrder>> orderListResponse =
+//                restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<ResponseOrder>>() {
+//        });
+////        restTemplate.exchange( 매개 값 -> 주소, 메소드 타입, 요청할 때 파라미터, 전달 받고자하는 방식)
+//        List<ResponseOrder> ordersList = orderListResponse.getBody();
 
-        ResponseEntity<List<ResponseOrder>> orderListResponse =
-                restTemplate.exchange(orderUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<ResponseOrder>>() {
-        });
-//        restTemplate.exchange( 매개 값 -> 주소, 메소드 타입, 요청할 때 파라미터, 전달 받고자하는 방식)
-        List<ResponseOrder> ordersList = orderListResponse.getBody();
+//        Using a feign Client
+        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
 
         userDto.setOrders(ordersList);
         return userDto;
