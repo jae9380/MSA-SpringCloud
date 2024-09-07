@@ -1,6 +1,7 @@
 encrypt:
 #  key: abcdabcdabcd
   key-store:
-    location: file://${user.home}/Desktop/git/spring-cloud-config/keystore/apiEncryptionKey.jks
+#    location: file://${user.home}/Desktop/git/spring-cloud-config/keystore/apiEncryptionKey.jks # Mac OS
+    location: file:///${user.home}/Desktop/git/git-local-repo/keystore/apiEncryptionKey.jks # Windows
     password: test123
     alias: apiEncryptionKey
