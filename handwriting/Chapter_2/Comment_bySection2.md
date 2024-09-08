@@ -92,6 +92,27 @@ public interface OrderServiceClient {
   </div>
 </details>
 
+<details>
+  <summary>part 3 / Tracing logs in Feign Client</summary>
+  <div markdown="1">
+  
+```yaml
+logging:
+  level:
+    com.example.userservice.client: DEBUG
+```
+```java
+@Bean
+public Logger.Level feignLoggerLevel() {
+    return Logger.Level.FULL;
+}
+```
+해당 설정으로 `Feign Client`관련 로그들을 출력 가능하다.
+![](https://i.postimg.cc/mrRxJpbg/2024-09-08-15-37-43.png)
+  
+  </div>
+</details>
+
 _토글_
 
 ```html
