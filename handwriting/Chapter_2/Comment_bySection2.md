@@ -113,6 +113,19 @@ public Logger.Level feignLoggerLevel() {
   </div>
 </details>
 
+<details>
+  <summary>part 4 / Feign Client Error Decoder</summary>
+  <div markdown="1">
+  
+`Feign` 패키지에서 지원하는 `Error Decoder`인터페이스를 이용하여 예외 처리    
+해당 인터페이스에 포함된 `Decode`는 `Feign Client`에서 발생했던 에러를 상태코드 값을 이용하여 분기되어진 적절한 코드들을 갖고 작업하도록 도와준다.   
+
+
+
+  
+  </div>
+</details>
+
 _토글_
 
 ```html
