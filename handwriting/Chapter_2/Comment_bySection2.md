@@ -118,11 +118,25 @@ public Logger.Level feignLoggerLevel() {
   <div markdown="1">
   
 `Feign` 패키지에서 지원하는 `Error Decoder`인터페이스를 이용하여 예외 처리    
-해당 인터페이스에 포함된 `Decode`는 `Feign Client`에서 발생했던 에러를 상태코드 값을 이용하여 분기되어진 적절한 코드들을 갖고 작업하도록 도와준다.   
+해당 인터페이스에 포함된 `Decode`는 `Feign Client`에서 발생했던 에러를 상태코드 값을 이용하여 분기되어진 적절한 코드들을 갖고 작업하도록 도와준다.
 
+  </div>
+</details>
 
-
+<details>
+  <summary>part 5 / Multiple Order Service</summary>
+  <div markdown="1">
   
+Order Service 2개 기동으로 Users의 요청을 분산 처리
+
+2개 기동으로 내장된 `H2-Database`가 동작을 하게된다. 이러면 두 데이터베이스의 동기화 부분에 있어서 문제가 생긴다.  
+이를 해결하기 위해 두개의 인스턴스가 하나의 데이터베이스를 이용하는 방법과 데이터베이스간의 동기화를 하는 방법이 있다.
+
+데이터베이스간의 동기화를 하는데 있어서 `Message Queuing Sever`를 이용하여 한 쪽의 서버에서 일어나는 일들을 다른 한 쪽의 데이터베이스에 알려줘 동기화 하는 방법이 있다. `Message Queuing Sever`으로 `Apache Kafka`, `RabbitMQ`를 사용
+
+또 다른 방법으로 두 방법을 같이 사용하는 `Kafka Connector + DB` 방법이 있다.  
+해당 방법은 `Message Queuing Sever`는 미들웨어 역활을 통해서 전달된 데이터를 하나의 단일 데이터베이스로 저장
+
   </div>
 </details>
 
