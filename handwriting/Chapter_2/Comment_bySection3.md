@@ -105,11 +105,17 @@ docker exec -it kafka-docker-kafka-1 /opt/kafka_2.13-2.8.1/bin/kafka-console-con
    - 용도: 컨슈머 그룹을 사용하면 메시지를 병렬로 처리할 수 있으며, 메시지 처리의 부하를 분산시킬 수 있습니다.
 
 - kafka-topics.sh 스크립트를 사용하여 토픽을 관리 명령어
+
   - --list: 모든 토픽의 목록을 조회합니다. 클러스터에 어떤 토픽들이 있는지 알고 싶을 때 사용합니다.
   - --create: 새 토픽을 생성합니다. 새로운 토픽을 클러스터에 추가할 때 사용합니다.
   - --describe: 특정 토픽의 세부 정보를 조회합니다. 토픽의 설정과 상태를 확인하고 싶을 때 사용합니다.
 
----
+    </div>
+  </details>
+
+<details>
+  <summary>part 2 / Install Kafka Connect </summary>
+  <div markdown="1">
 
 ## Kafka Connect
 
@@ -118,13 +124,54 @@ docker exec -it kafka-docker-kafka-1 /opt/kafka_2.13-2.8.1/bin/kafka-console-con
 
 데이터를 갖고 오는 쪽을 `Kafka Connect Source`, 보내는 쪽을 `Kafka Connect Sink`라고 한다.
 
-강의에서는 로컬에서 MariaDB를 실행을 하지만, Docker에서 실행을 할 것이다. 그렇기 때문에 도커 이미지를 받고, 컨테이너 생성
+현재 데이터베이스에 있는 내용을 또 다른 데이터베이스로 값을 옮기는 작업을 해보겠다.
 
 ```shell
 docker pull mariadb:10.5.26
 
 docker run -p 3306:3306 --name mariadb -e MARIADB_ROOT_PASSWORD=test123 -d mariadb:10.5.26
 ```
+
+[Kafka Connect confluent-community-7.1.0.tar.gz 설치](http://packages.confluent.io/archive/7.1/confluent-community-7.1.0.tar.gz)  
+아니면 버전을 선택하여 다운로드 [Kafka Connect 파일](http://packages.confluent.io/archive/) 링크에서 원하는 버전 다운
+
+```shell
+tar svf confluent-community-7.1.0.tar.gz
+```
+
+이후 실행을 하고 kafka topic을 확인하면
+
+```shell
+$ ./bin/windows/kafka-topics.bat --bootstrap-server localhost:9092 --list
+__consumer_offsets
+connect-configs
+connect-offsets
+connect-status
+```
+
+> #### Windows환경 `Classpath is empty. Please build the project first e.g. by running 'gradlew jarAll'` 에러
+>
+> 위 같이 에러가 발생되면 `./bin/windows/kafka-run-class.bat` 파일에서 `-rem Classpath addition for core` 부분을 찾아
+>
+> ```
+> rem classpath addition for LSB style path
+> if exist %BASE_FIR%\share\java\kafka\* (
+>  call:concat %BASE_DIR%\share\java\kafka\*
+> )
+> ```
+>
+> 코드 추가
+
+> #### Windows환경 JDBC커넥터 설정
+>
+> `./etc/kafka/connect-distributed.properties` 파일에 Plugin정보 추가
+>
+> ```properties
+> # plugin.path=/user/share/java
+> plugin.path=\C:\\Work\\confluentinc-kafka-connect-jdbc-10.0.1\\lib
+> ```
+
+4개의 topic이 추가된 것을 확인 가능하다.
 
   </div>
 </details>
