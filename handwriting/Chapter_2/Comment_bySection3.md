@@ -149,6 +149,23 @@ connect-offsets
 connect-status
 ```
 
+만약 Windows 환경에서 실행을 하면
+`java.io.FileNotFoundException: D:\kafka\connect\confluent-7.3.1\config\connect-log4j.properties (지정된 경로를 찾을 수  없습니다)`의 에러가 발생할 수 있다.
+
+이를 해결하기 위해서는 `connect-distributed.bat`파일에서
+
+```
+set KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:%BASE_DIR%/config/connect-log4j.properties
+```
+
+의 내용을
+
+```
+set KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:%BASE_DIR%/etc/kafka/connect-log4j.properties
+```
+
+변경해주면 해결이 된다.
+
 > #### Windows환경 `Classpath is empty. Please build the project first e.g. by running 'gradlew jarAll'` 에러
 >
 > 위 같이 에러가 발생되면 `./bin/windows/kafka-run-class.bat` 파일에서 `-rem Classpath addition for core` 부분을 찾아
@@ -171,7 +188,49 @@ connect-status
 > plugin.path=\C:\\Work\\confluentinc-kafka-connect-jdbc-10.0.1\\lib
 > ```
 
+> #### MariaDB JDBC 드라이버 설정
+>
+> MariaDB JDBC 드라이버를 `./share/java/kafka`로 복사해준다.
+> [MariaDB JDBC 다운로드](https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/)
+
 4개의 topic이 추가된 것을 확인 가능하다.
+
+  </div>
+</details>
+
+<details>
+  <summary>part 3 / Kafka Source Connect</summary>
+  <div markdown="1">
+
+- Kafka Source Connect 등록
+
+아래의 `Json`타입의 데이터를 `http://localhost:8083/connectors`,`POST`로 보내준다.
+
+```json
+{
+  "name": "my-source-connect",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:mysql://localhost:3306/mydb",
+    "connection.user": "root",
+    "connection.password": "test123",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "table.whitelist": "mydb.users",
+    "topic.prefix": "my_topic_",
+    "tasks.max": "1"
+  }
+}
+```
+
+- 그리고 등록이 되었는지 확인
+  - `http://localhost:8083/connectors/` `GET` - 목록 확인
+  - `http://localhost:8083/connectors/my-source-connect/status` `GET` - 상세한 정보 확인하는 방법
+
+만약 삭제를 하고 싶을 경우는
+`http://localhost:8083/connectors/my-source-connect/status`, `DELETE`로 보내주면 된다.
+
+상세정보를 확인 할 때 `RUNNING`이라고 나타나면 잘 적용이 되었다.
 
   </div>
 </details>
