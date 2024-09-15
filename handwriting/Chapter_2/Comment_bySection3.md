@@ -278,7 +278,7 @@ kafka 소비자 콘솔을 열어서 어떻게 날라왔는지 확인을 하자
 </details>
 
 <details>
-  <summary>part 3 / ues Kafka Sink Connect</summary>
+  <summary>part 4 / ues Kafka Sink Connect</summary>
   <div markdown="1">
 
 ```json
