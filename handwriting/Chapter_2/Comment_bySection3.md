@@ -232,6 +232,74 @@ set KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:%BASE_DIR%/etc/kafka/connect-log
 
 상세정보를 확인 할 때 `RUNNING`이라고 나타나면 잘 적용이 되었다.
 
+```sql
+INSERT INTO users(user_id, pwd, NAME) VALUES('user1','test123','User name');
+```
+
+이렇게 데이터베이스에 변경점을 만들어 주고 Topic 리스트를 확인을 하면 새로운 Topic이 생성되어 있을 것이다.
+
+kafka 소비자 콘솔을 열어서 어떻게 날라왔는지 확인을 하자
+
+```shell
+ ./bin/windows/kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my_topic_users --from-beginning
+```
+
+```json
+{
+  "schema": {
+    "type": "struct",
+    "fields": [
+      { "type": "int32", "optional": false, "field": "id" },
+      { "type": "string", "optional": true, "field": "user_id" },
+      { "type": "string", "optional": true, "field": "pwd" },
+      { "type": "string", "optional": true, "field": "name" },
+      {
+        "type": "int64",
+        "optional": true,
+        "name": "org.apache.kafka.connect.data.Timestamp",
+        "version": 1,
+        "field": "created_at"
+      }
+    ],
+    "optional": false,
+    "name": "users"
+  },
+  "payload": {
+    "id": 1,
+    "user_id": "user1",
+    "pwd": "test123",
+    "name": "User name",
+    "created_at": 1726149611000
+  }
+}
+```
+
+  </div>
+</details>
+
+<details>
+  <summary>part 3 / ues Kafka Sink Connect</summary>
+  <div markdown="1">
+
+```json
+{
+  "name": "my-sink-connect",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:mariadb://localhost:3306/mydb",
+    "connection.user": "root",
+    "connection.password": "test123",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "delete.enabled": "false",
+    "tasks.max": "1",
+    "topics": "my_topic_users"
+  }
+}
+```
+
+등록
+
   </div>
 </details>
 
