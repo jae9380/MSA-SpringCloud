@@ -39,8 +39,7 @@ public class KafkaConsumer {
 
         if (entity!=null) {
             entity.setStock(entity.getStock()-(Integer) map.get("qty"));
+            catalogRepository.save(entity);
         }
-
-        catalogRepository.save(entity);
     }
 }
