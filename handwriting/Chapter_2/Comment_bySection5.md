@@ -147,6 +147,28 @@ public class TimedConfig {
   </div>
 </details>
 
+<details>
+  <summary>part 3 / Prometheus + Grafana</summary>
+  <div markdown="1">
+
+## Prometheus
+
+`Prometheus`라는 모니터링 도구는 매트릭스를 수집하고 모니터링 및 알람에 사용되고 있는 오픈소스 어플리케이션이다.
+
+`Pull` 방식의 구조와 다양한 `Metric Exporter` 제공을 한다.
+
+[Prometheus 다운로드](https://prometheus.io/download/)
+
+## Grafana
+
+데이터 시각화, 모니터링 및 분석을 위한 오픈소스 어플리케이션이다.  
+시계열 데이터를 시각화하기 위한 대시보드를 제공한다.
+
+[Grafans 다운로드](https://grafana.com/grafana/download)
+
+  </div>
+</details>
+
 _토글_
 
 ```html
