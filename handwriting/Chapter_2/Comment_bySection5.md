@@ -115,6 +115,38 @@ management:
   </div>
 </details>
 
+<details>
+  <summary>part 2 / 모니터링 </summary>
+  <div markdown="1">
+
+```xml
+        <!-- Micrometer-->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
+```
+
+추가와 `application.properties`에 `info, metrics, prometheus`도 추가적으로 설정을 해준다.
+
+`micrometer`라이브러리에서 `@Timed`라는 어노테이션을 제공한다. 이것을 이용하여 쉽게 counter metrics을 적용할 수 있다. 이것을 이용하기 위해 `spring boot 3.` 버전 이후는 `TimedAspect`타입의 빈을 등록을 해줘야 한다.
+
+```java
+@Configuration
+public class TimedConfig {
+    @Bean
+    public TimedAspect timedAspect(MeterRegistry meterRegistry) {
+        return new TimedAspect(meterRegistry);
+    }
+}
+```
+
+이후 컨트롤러에서 해당 어노테이션을 사용하여 맵핑을 시도하고, `Actuator`의 `metrics`, `prometheus`로 들어가서 확인을 하면 나타날 것이다.
+
+  </div>
+</details>
+
 _토글_
 
 ```html
