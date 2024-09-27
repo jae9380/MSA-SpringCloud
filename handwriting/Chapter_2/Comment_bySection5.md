@@ -166,8 +166,32 @@ public class TimedConfig {
 
 [Grafans 다운로드](https://grafana.com/grafana/download)
 
-  </div>
-</details>
+`Prometheus` 디렉토리 내부 `Prometheus.yml`에 추가적인 설정을 할 수 있다.
+
+`scrape_configs:` 아래에 추가적으로
+
+```yaml
+- job_name: "user-service"
+  scrape_interval: 15s
+  metrics_path: "/user-service/actuator/prometheus"
+  static_configs:
+    - targets: ["localhost:8000"]
+```
+
+그리고 , `Order-Service`, `APIGateway-Service` 등 추가적으로 설정,
+
+- Prometheus 실행
+
+  - MacOS - ./prometheus --config.file=prometheus.yml
+  - Windows - .\prometheus.exe
+
+- Grafana 실행
+
+  - MacOS - ./bin/grafana-server
+  - Windows - .\bin\grafana-server start
+
+    </div>
+  </details>
 
 _토글_
 
