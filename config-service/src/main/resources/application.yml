@@ -21,9 +21,10 @@ spring:
 #          uri: file:///C://Users//ljy53/Desktop/git/git-local-repo
 #        기존 방법은 로컬에 있는 파일을 갖고 왔지만, git 레포지터리에서 파일을 갖고 올 수 있다.
 #
-          uri: https://github.com/jae9380/spring-cloud-config.git
+          uri: https://github.com/jae9380/spring-cloud-config
 #        만약 public이 아닌 레포지터리라면 아이디와 비밀번호를 명시해야 한다.
 #          username: [username]
+#          password: [password]
 management:
   endpoints:
     web:
