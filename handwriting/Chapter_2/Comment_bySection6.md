@@ -37,6 +37,24 @@ docker run -d -p 8888:8888 --network ecommerce-network -e "spring.rabbitmq.host=
   </div>
 </details>
 
+<details>
+  <summary>part 2 / Discovery Service</summary>
+  <div markdown="1">
+
+`discovery-service`프로젝트 또한 `Configuration-Service`의 방법과 유사한 방법으로 실행하면 된다.
+
+이미지를 만들었다면 이번에는 허브에 등록을 해보겠다.
+
+```bash
+$ docker push jae9380/discovery-service:1.0
+$ docker push jae9380/config-service:1.0
+```
+
+이와 같이 명령어를 사용을 할 때 주의해야 할 부분이 있다. 뒤에 버전을 명시를 해줘야 한다. 만약 버전을 명시하지 않았을 경우에는 `latest`를 검색하게 되어버린다.
+
+  </div>
+</details>
+
 _토글_
 
 ```html
