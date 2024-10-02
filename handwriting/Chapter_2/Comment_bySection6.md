@@ -38,8 +38,10 @@ docker run -d -p 8888:8888 --network ecommerce-network -e "spring.rabbitmq.host=
 </details>
 
 <details>
-  <summary>part 2 / Discovery Service</summary>
+  <summary>part 2 / Discovery Service, ApiGateway Service</summary>
   <div markdown="1">
+
+## Discovery Service
 
 `discovery-service`프로젝트 또한 `Configuration-Service`의 방법과 유사한 방법으로 실행하면 된다.
 
@@ -51,6 +53,41 @@ $ docker push jae9380/config-service:1.0
 ```
 
 이와 같이 명령어를 사용을 할 때 주의해야 할 부분이 있다. 뒤에 버전을 명시를 해줘야 한다. 만약 버전을 명시하지 않았을 경우에는 `latest`를 검색하게 되어버린다.
+
+## ApiGateway Service
+
+해당 프로젝트에서 설정해야 하는 부분은 크게 `Eureka`정보, `RabbitMQ`정보, `Configuration` 정보를 설정해줘야 한다.
+
+```yml
+# Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+# Rabbitmq
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+
+# Configuration
+spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: config-service
+```
+
+해당 부분 설정을 해줘야 하기 때문에 아래와 같이 설정을 해준다.
+
+```bash
+docker run -d -p 8000:8000 --network ecommerce-network \
+	-e "spring.cloud.config.uri=http://config-service:8888" \
+	-e "spring.rabbitmq.host=rabbitmq" \
+	-e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" \
+	--name apigateway-service jae9380/apigateway-service:1.0
+```
 
   </div>
 </details>
