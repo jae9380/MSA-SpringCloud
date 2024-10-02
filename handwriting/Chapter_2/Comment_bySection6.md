@@ -92,6 +92,51 @@ docker run -d -p 8000:8000 --network ecommerce-network \
   </div>
 </details>
 
+<details>
+  <summary>part 3 / MariaDB</summary>
+  <div markdown="1">
+  
+이번에는 데이터베이스를 띄울 것이다.
+
+기존에 로컬 환경에서 사용한 데이터들이 있을 것이다. 해당 데이터를 사용을 할 것이기 때문에 기존에 있던 내용들을 잠시 복사
+
+Mac OS 같은 경우 `cp`명령어 사용, Windows 경우는 복사로 진행
+
+```dockerfile
+FROM mariadb:[version]
+ENV MYSQL_ROOT_PASSWORD test123
+ENV MYSQL_DATABASE mydb
+COPY ./mysql_data/data /var/lib/mysql
+EXPOSE 3306
+```
+
+해당 과정에서 이와 같은 에러가 발생할 수 있을 것이다.
+`InnoDB: Upgrade after a crash is not supported. The redo log was created with MariaDB 10.5.19. You must start up and shut down MariaDB 10.7 or earlier.`  
+이럴 경우에는 로컬에서 사용한 버전을 확인하여 `Dockerfile`에 버전을 명시
+
+```sql
+SELECT VERSION();
+```
+
+만약 기존의 파일이 필요하지 않는다면 `Dockerfile`내 `COPY`제거 후 실행
+
+컨테이너 생성 후 로그를 확인을 하면 잘 나타날 것이다.
+
+```bash
+docker logs mariadb
+```
+
+어떤한 IP에서 접근할 수 있도록 설정을 해주자
+
+```sql
+grant all privileges on *.* to 'root'@'%' identified by 'test123';
+
+flush privileges;
+```
+
+  </div>
+</details>
+
 _토글_
 
 ```html
