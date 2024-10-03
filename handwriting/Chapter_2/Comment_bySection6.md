@@ -138,8 +138,10 @@ flush privileges;
 </details>
 
 <details>
-  <summary>part 4 / Kafka</summary>
+  <summary>part 4 / Kafka, Zipkin</summary>
   <div markdown="1">
+
+## Kafka, Zookeeper
 
 [githyb by.wurstmeister/kafka-docker](https://github.com/wurstmeister/kafka-docker)
 해당 주소를 시용하여 clone을 하여 파일을 사용할 계획이다.
@@ -191,6 +193,19 @@ my-network:
 
 ```bash
 docker-compose -f docker-compose-single-broker.yml up -d
+```
+
+## Zipkin
+
+[Zipkin](https://zipkin.io/pages/quickstart) 해당 페이지로 들어가 `Quickstart`내용에 `Docker`로 구동하는 방법이 나와있다.
+
+해당 방법은 굉장히 간단하기 때문에 네트워크 설정만 주의하면 큰 문제는 없을 것이다.
+
+```bash
+$ docker run -d -p 9411:9411 \
+          --network ecommerce-network \
+          --name zipkin \
+          openzipkin/zipkin
 ```
 
   </div>
