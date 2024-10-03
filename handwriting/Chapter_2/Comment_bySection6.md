@@ -211,6 +211,42 @@ $ docker run -d -p 9411:9411 \
   </div>
 </details>
 
+<details>
+  <summary>part 5 / Prometheus and Grafana</summary>
+  <div markdown="1">
+  
+[Prometheus](https://prometheus.io/download/)에서는 직접 도커 이미지를 제공하고 있기에 해당 주소로 들어가 사용하는 것이 좋다.
+  
+[Grafana](https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1) 또한 제공을 하고 있기 때문에 `Prometheus`, `Grafana`를 띄울 때 네트워크 설정만 주의하여 띄우면 될 것이다.
+
+추가적으로 `Prometheus`는 기존에 사용했던 `Prometheus.yml`을 사용할 예정이기 때문에
+
+```yml
+-v /path/to/prometheus.yml:/etc/prometheus/prometheus.yml
+```
+
+설정을 추가, `Grafana`의 경우는 네트워크 설정만 주의하면 된다.
+
+`Prometheus.yml`파일 내부에는 로컬호스트와 포트번호를 이용하여 엔트포인트를 지정 했었기 때문에 해당 부분을 수정을 해야 한다.
+
+```bash
+$ docker run -d -p 9090:9090 \
+          --network ecommerce-network \
+          --name prometheus \
+          -v /d/prometheus/prometheus-2.54.1.windows-amd64/prometheus.yml:/etc/prometheus/prometheus.yml \
+          prom/prometheus
+```
+
+```bash
+$ docker run -d -p 3000:3000 \
+          --network ecommerce-network \
+          --name grafana \
+          grafana/grafana
+```
+
+  </div>
+</details>
+
 _토글_
 
 ```html
