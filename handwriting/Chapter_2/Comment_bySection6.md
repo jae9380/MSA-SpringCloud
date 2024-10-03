@@ -137,6 +137,65 @@ flush privileges;
   </div>
 </details>
 
+<details>
+  <summary>part 4 / Kafka</summary>
+  <div markdown="1">
+
+[githyb by.wurstmeister/kafka-docker](https://github.com/wurstmeister/kafka-docker)
+해당 주소를 시용하여 clone을 하여 파일을 사용할 계획이다.
+
+해당 폴더 내 `docker-compose-single-broker.yml`파일을 사용할 것이다.  
+내부에 ip 주소값을 수정을 하고, `kafka`부분에 `depends_on` 설정
+
+```yml
+depends_on:
+  - zookeeper
+```
+
+그리고 네트워그 명시를 해준다.
+
+```yml
+version: "2"
+services:
+zookeeper:
+  image: wurstmeister/zookeeper
+  ports:
+    - "2181:2181"
+  networks:
+    my-network:
+      ipv4_address: 172.19.0.100
+kafka:
+  # build: .
+  image: wurstmeister/kafka
+  ports:
+    - "9092:9092"
+  environment:
+    KAFKA_ADVERTISED_HOST_NAME: 172.19.0.101
+    KAFKA_CREATE_TOPICS: "test:1:1"
+    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  depends_on:
+    - zookeeper
+  networks:
+    my-network:
+      ipv4_address: 172.19.0.101
+
+networks:
+my-network:
+  external: true
+  name: ecommerce-network # 172.19.0.1 ~
+```
+
+해당 파일이 있는 위치에서 해당 명령어 사용
+
+```bash
+docker-compose -f docker-compose-single-broker.yml up -d
+```
+
+  </div>
+</details>
+
 _토글_
 
 ```html
