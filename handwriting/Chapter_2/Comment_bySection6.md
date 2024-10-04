@@ -258,7 +258,7 @@ $ docker run -d -p 3000:3000 \
 | Zookeeper         | 172.19.0.100/16 | 2181 | Kafka                 | 172.19.0.101/16 | 9092 |
 
 <details>
-  <summary>part 5 / User Microservice</summary>
+  <summary>part 5 / User Microservice, Order Service</summary>
   <div markdown="1">
   
 해당 프로젝트 내 yml 파일 내부 `Zipkin`과 `RabbitMQ`등의 주소값을 직접 수정하지 않고 나중에 컨테이너를 띄울 때 명시해줄 것이다.

@@ -62,7 +62,7 @@ public class OrderController {
 //        orderDto.setTotalPrice(order.getQty() * order.getUnitPrice());
 
         /* Send this order to the Kafka */
-//        kafkaProducer.send("example-catalog-topic", orderDto);
+        kafkaProducer.send("example-catalog-topic", orderDto);
 //        orderProducer.send("orders", orderDto);
 
 //        ResponseOrder responseOrder = mapper.map(orderDto, ResponseOrder.class);
@@ -84,12 +84,12 @@ public class OrderController {
             result.add(new ModelMapper().map(v, ResponseOrder.class));
         });
 
-        try{
-            Thread.sleep(1000);
-            throw new Exception("장애 발생");
-        }catch (InterruptedException e) {
-            log.warn(e.getMessage());
-        }
+//        try{
+//            Thread.sleep(1000);
+//            throw new Exception("장애 발생");
+//        }catch (InterruptedException e) {
+//            log.warn(e.getMessage());
+//        }
         log.info("Add retrieve Orders data");
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
