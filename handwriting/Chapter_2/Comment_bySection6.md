@@ -258,9 +258,11 @@ $ docker run -d -p 3000:3000 \
 | Zookeeper         | 172.19.0.100/16 | 2181 | Kafka                 | 172.19.0.101/16 | 9092 |
 
 <details>
-  <summary>part 5 / User Microservice, Order Service</summary>
+  <summary>part 5 / User Microservice, Order Service, Catalog Service</summary>
   <div markdown="1">
-  
+
+## User Microservice
+
 해당 프로젝트 내 yml 파일 내부 `Zipkin`과 `RabbitMQ`등의 주소값을 직접 수정하지 않고 나중에 컨테이너를 띄울 때 명시해줄 것이다.
 
 그런데 `bootstrap.yml`내용을 `Configuration-Service`에서 값을 갖고 오기 때문에 해당 값을 수정해줘야 한다.
@@ -277,6 +279,28 @@ $ docker run -d --network ecommerce-network \
           -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" \
           -e "logging.file=/api-logs/users-ws.log" \
           jae9380/user-service:1.0
+```
+
+## Order Microservice
+
+```bash
+$ docker run -d --network ecommerce-network --name order-service \
+          -e "spring.zipkin.base-url=http://zipkin:9411" \
+          -e "management.zipkin.tracing.endpoint=http://zipkin:9411/api/v2/spans"  \
+          -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" \
+          -e "spring.datasource.url=jdbc:mariadb://mariadb:3306/mydb" \
+          -e "logging.file=/api-logs/orders-ws.log" \
+          jae9380/order-service
+```
+
+## Catalog Microservice
+
+```bash
+$ docker run -d --network ecommerce-network \
+        --name catalog-service \
+        -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" \
+        -e "logging.file=/api-logs/catalogs-ws.log" \
+        jae9380/catalog-service:1.0
 ```
 
   </div>
