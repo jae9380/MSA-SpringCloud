@@ -247,6 +247,41 @@ $ docker run -d -p 3000:3000 \
   </div>
 </details>
 
+- 현재 시점에서 도커 `ecommerce-network` 네트워크 현황
+
+| 서비스            | IP              | Port | 서비스                | IP              | Port |
+| ----------------- | --------------- | ---- | --------------------- | --------------- | ---- |
+| Rabbitmq          | 172.19.0.2/16   | 5671 | Configuration-Service | 172.19.0.3/16   | 8888 |
+| Discovery-Service | 172.19.0.4/16   | 8761 | ApiGateway-Service    | 172.19.0.5/16   | 8000 |
+| MariaDB           | 172.19.0.6/16   | 3306 | Zipkin                | 172.19.0.7/16   | 9411 |
+| Prometheus        | 172.19.0.8/16   | 9090 | Grafana               | 172.19.0.9/16   | 3000 |
+| Zookeeper         | 172.19.0.100/16 | 2181 | Kafka                 | 172.19.0.101/16 | 9092 |
+
+<details>
+  <summary>part 5 / User Microservice</summary>
+  <div markdown="1">
+  
+해당 프로젝트 내 yml 파일 내부 `Zipkin`과 `RabbitMQ`등의 주소값을 직접 수정하지 않고 나중에 컨테이너를 띄울 때 명시해줄 것이다.
+
+그런데 `bootstrap.yml`내용을 `Configuration-Service`에서 값을 갖고 오기 때문에 해당 값을 수정해줘야 한다.
+
+[Configuration-Service user-service(default)](http://127.0.0.1:8888/user-service/default)
+
+```bash
+$ docker run -d --network ecommerce-network \
+          --name user-service \
+          -e "spring.cloud.config.uri=http://config-service:8888" \
+          -e "spring.rabbitmq.host=rabbitmq" \
+          -e "spring.zipkin.base-url=http://zipkin:9411" \
+          -e "management.zipkin.tracing.endpoint=http://zipkin:9411/api/v2/spans"  \
+          -e "eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/" \
+          -e "logging.file=/api-logs/users-ws.log" \
+          jae9380/user-service:1.0
+```
+
+  </div>
+</details>
+
 _토글_
 
 ```html
