@@ -306,6 +306,21 @@ $ docker run -d --network ecommerce-network \
   </div>
 </details>
 
+<details>
+  <summary>part 6 / Total Test</summary>
+  <div markdown="1">
+  
+모든 프로젝트를 컨테이너로 띄웠으니 잘 동작하는지 테스트를 진행
+
+- `User-Microservice` 403  
+   `health_check` 테스트 시 403에러가 발생한다.  
+   해당 문제는 `WebSecurity.java`파일에서 `hasIpAddress()`에 설정된 IP가 일치하지 않기에 발생하는 문제이다.
+
+  기존에 띄우 컨테이너를 지우고 기존의 파일에서 수정하여 다시 띄우면 간단하게 해결이 가능
+
+    </div>
+  </details>
+
 _토글_
 
 ```html
